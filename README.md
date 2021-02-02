@@ -54,6 +54,13 @@ python setup.py install
 
 ## Project Structure
 
+* `torch_geometric_autoscale/` contains the source code of *PyGAS*.
+* `examples/` contains examples to demonstrate how to apply GAS in practice.
+* `small_benchmark/` contains the experiments to validate resembling of full-batch performance
+* `large_benchmark/` contains the experiments on large-scale graphs
+
+We use [Hydra](https://hydra.cc/) to manage hyperparameter configurations.
+
 ## Running tests
 
 ```
