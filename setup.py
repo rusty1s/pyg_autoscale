@@ -68,14 +68,14 @@ def get_extensions():
 
 
 __version__ = '0.0.0'
-install_requires = []
+install_requires = ['ogb', 'hydra-core']
 setup_requires = ['pytest-runner']
 tests_require = ['pytest', 'pytest-cov']
 
 setup(
     name='torch_geometric_autoscale',
     version='0.0.0',
-    description='PyGas: Auto-Scaling in PyG',
+    description='PyGAS: Auto-Scaling in PyG',
     python_requires='>=3.6',
     install_requires=install_requires,
     setup_requires=setup_requires,
