@@ -35,8 +35,8 @@ class GNN(ScalableGNN):
 
 ## Installation
 
-* Install [PyTorch >=1.7.0](https://pytorch.org/get-started/locally/)
-* Install [PyTorch Geometric]() from master:
+* Install [**PyTorch >= 1.7.0**](https://pytorch.org/get-started/locally/)
+* Install [**PyTorch Geometric**](https://github.com/rusty1s/pytorch_geometric#pytorch-170171) from **master**:
 
 ```
 pip install --no-index torch-scatter -f https://pytorch-geometric.com/whl/torch-1.7.0+${CUDA}.html
@@ -46,7 +46,7 @@ pip install git+https://github.com/rusty1s/pytorch_geometric.git
 
 where `${CUDA}` should be replaced by either `cpu`, `cu92`, `cu101`, `cu102`, or `cu110` depending on your PyTorch installation.
 
-Then run:
+Then, run:
 
 ```
 python setup.py install
