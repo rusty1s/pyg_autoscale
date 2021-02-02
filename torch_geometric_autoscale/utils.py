@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple
 
 import torch
 from torch import Tensor
@@ -10,7 +10,8 @@ def index2mask(idx: Tensor, size: int) -> Tensor:
     return mask
 
 
-def compute_acc(logits: Tensor, y: Tensor, mask: Optional[Tensor] = None):
+def compute_acc(logits: Tensor, y: Tensor,
+                mask: Optional[Tensor] = None) -> float:
     if mask is not None:
         logits, y = logits[mask], y[mask]
 
@@ -29,7 +30,7 @@ def compute_acc(logits: Tensor, y: Tensor, mask: Optional[Tensor] = None):
 
 
 def gen_masks(y: Tensor, train_per_class: int = 20, val_per_class: int = 30,
-              num_splits: int = 20):
+              num_splits: int = 20) -> Tuple[Tensor, Tensor, Tensor]:
     num_classes = int(y.max()) + 1
 
     train_mask = torch.zeros(y.size(0), num_splits, dtype=torch.bool)
