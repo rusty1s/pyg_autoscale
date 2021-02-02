@@ -26,11 +26,11 @@ class GNN(ScalableGNN):
             self.convs.append(GCNConv(hidden_channels, hidden_channels))
         self.convs.append(GCNConv(hidden_channels, out_channels))
 
-    def forward(self, x, adj, batch_size, n_id):
+    def forward(self, x, adj_t, batch_size, n_id):
         for conv, history in zip(self.convs[:-1], self.histories):
-            x = conv(x, adj).relu_()
+            x = conv(x, adj_t).relu_()
             x = self.push_and_pull(history, x, batch_size, n_id)
-        return self.convs[-1](x, adj
+        return self.convs[-1](x, adj_t)
 ```
 
 ## Installation
