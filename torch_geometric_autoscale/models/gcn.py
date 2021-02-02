@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Dict, Any
 
 import torch
 from torch import Tensor
@@ -75,7 +75,8 @@ class GCN(ScalableGNN):
         return x
 
     @torch.no_grad()
-    def forward_layer(self, layer, x, adj_t, state):
+    def forward_layer(self, layer: int, x: Tensor, adj_t: SparseTensor,
+                      state: Dict[Any]) -> Tensor:
         if layer == 0 and self.drop_input:
             x = F.dropout(x, p=self.dropout, training=self.training)
         else:

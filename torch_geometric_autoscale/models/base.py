@@ -1,4 +1,4 @@
-from typing import Optional, Callable
+from typing import Optional, Callable, Dict, Any
 
 import warnings
 
@@ -6,8 +6,7 @@ import torch
 from torch import Tensor
 from torch_sparse import SparseTensor
 
-from scaling_gnns.history2 import History
-from scaling_gnns.pool import AsyncIOPool
+from torch_geometric_autoscale import History, AsyncIOPool, SubgraphLoader
 
 
 class ScalableGNN(torch.nn.Module):
@@ -125,7 +124,7 @@ class ScalableGNN(torch.nn.Module):
         return out
 
     @torch.no_grad()
-    def mini_inference(self, loader) -> Tensor:
+    def mini_inference(self, loader: SubgraphLoader) -> Tensor:
         loader = [data + ({}, ) for data in loader]
 
         for batch, batch_size, n_id, offset, count, state in loader:
@@ -162,3 +161,8 @@ class ScalableGNN(torch.nn.Module):
         self.pool.synchronize_push()
 
         return self._out
+
+    @torch.no_grad()
+    def forward_layer(self, layer: int, x: Tensor, adj_t: SparseTensor,
+                      state: Dict[Any]) -> Tensor:
+        raise NotImplementedError
