@@ -28,8 +28,8 @@ class GCN(ScalableGNN):
         self.residual = residual
         self.linear = linear
 
+        self.lins = ModuleList()
         if linear:
-            self.lins = ModuleList()
             self.lins.append(Linear(in_channels, hidden_channels))
             self.lins.append(Linear(hidden_channels, out_channels))
 
@@ -61,9 +61,8 @@ class GCN(ScalableGNN):
 
     def reset_parameters(self):
         super(GCN, self).reset_parameters()
-        if self.linear:
-            for lin in self.lins:
-                lin.reset_parameters()
+        for lin in self.lins:
+            lin.reset_parameters()
         for conv in self.convs:
             conv.reset_parameters()
         for bn in self.bns:

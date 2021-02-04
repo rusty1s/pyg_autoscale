@@ -1,6 +1,6 @@
 from .base import ScalableGNN
 from .gcn import GCN
-# from .gat import GAT
+from .gat import GAT
 # from .appnp import APPNP
 # from .gcn2 import GCN2
 # from .pna import PNA
@@ -9,7 +9,7 @@ from .gcn import GCN
 __all__ = [
     'ScalableGNN',
     'GCN',
-    # 'GAT',
+    'GAT',
     # 'APPNP',
     # 'GCN2',
     # 'PNA',
