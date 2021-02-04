@@ -1,0 +1,113 @@
+# @package _group_
+name: GAT
+norm: false
+loop: true
+params:
+
+  Cora:
+    architecture:
+      num_layers: 2
+      hidden_channels: 8
+      hidden_heads: 8
+      out_heads: 1
+      residual: false
+      dropout: 0.6
+    num_parts: 40
+    batch_size: 10
+    num_workers: 0
+    lr: 0.005
+    reg_weight_decay: 5e-4
+    nonreg_weight_decay: 0
+    grad_norm: 1.0
+    epochs: 400
+    runs: 20
+
+  CiteSeer:
+    architecture:
+      num_layers: 2
+      hidden_channels: 8
+      hidden_heads: 8
+      out_heads: 1
+      residual: false
+      dropout: 0.6
+    num_parts: 24
+    batch_size: 8
+    num_workers: 0
+    lr: 0.005
+    reg_weight_decay: 5e-4
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 400
+    runs: 20
+
+  PubMed:
+    architecture:
+      num_layers: 2
+      hidden_channels: 8
+      hidden_heads: 8
+      out_heads: 8
+      residual: false
+      dropout: 0.6
+    num_parts: 4
+    batch_size: 1
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.001
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 400
+    runs: 20
+
+  CoauthorCS:
+    architecture:
+      num_layers: 2
+      hidden_channels: 8
+      hidden_heads: 8
+      out_heads: 1
+      residual: false
+      dropout: 0.6
+    num_parts: 8
+    batch_size: 2
+    num_workers: 0
+    lr: 0.005
+    reg_weight_decay: 0.01
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 400
+    runs: 20
+
+  CoauthorPhysics:
+    architecture:
+      num_layers: 2
+      hidden_channels: 8
+      hidden_heads: 8
+      out_heads: 1
+      residual: false
+      dropout: 0.6
+    num_parts: 4
+    batch_size: 1
+    num_workers: 0
+    lr: 0.005
+    reg_weight_decay: 0.01
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 400
+    runs: 20
+
+  WikiCS:
+    architecture:
+      num_layers: 2
+      hidden_channels: 14
+      hidden_heads: 5
+      out_heads: 1
+      residual: false
+      dropout: 0.5
+    num_parts: 2
+    batch_size: 1
+    num_workers: 0
+    lr: 0.007
+    reg_weight_decay: 5e-4
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 400
+    runs: 20

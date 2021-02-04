@@ -1,0 +1,5 @@
+defaults:
+  - model: gcn
+  - dataset: cora
+device: 0
+root: '/tmp/datasets'

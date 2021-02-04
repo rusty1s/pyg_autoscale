@@ -1,0 +1,133 @@
+# @package _group_
+name: APPNP
+norm: true
+loop: false
+params:
+
+  Cora:
+    architecture:
+      num_layers: 10
+      hidden_channels: 64
+      alpha: 0.1
+      dropout: 0.5
+    num_parts: 4
+    batch_size: 2
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.005
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 600
+    runs: 20
+
+  CiteSeer:
+    architecture:
+      num_layers: 10
+      hidden_channels: 64
+      alpha: 0.1
+      dropout: 0.5
+    num_parts: 24
+    batch_size: 6
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.005
+    nonreg_weight_decay: 0
+    grad_norm: 1.0
+    epochs: 600
+    runs: 20
+
+  PubMed:
+    architecture:
+      num_layers: 10
+      hidden_channels: 64
+      alpha: 0.1
+      dropout: 0.5
+    num_parts: 4
+    batch_size: 2
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.005
+    nonreg_weight_decay: 0
+    grad_norm: 1.0
+    epochs: 600
+    runs: 20
+
+  CoauthorCS:
+    architecture:
+      num_layers: 10
+      hidden_channels: 64
+      alpha: 0.2
+      dropout: 0.5
+    num_parts: 32
+    batch_size: 16
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.005
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 600
+    runs: 20
+
+  CoauthorPhysics:
+    architecture:
+      num_layers: 10
+      hidden_channels: 64
+      alpha: 0.2
+      dropout: 0.5
+    num_parts: 2
+    batch_size: 1
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.005
+    nonreg_weight_decay: 0
+    grad_norm: 1.0
+    epochs: 600
+    runs: 20
+
+  AmazonComputers:
+    architecture:
+      num_layers: 10
+      hidden_channels: 64
+      alpha: 0.2
+      dropout: 0.5
+    num_parts: 4
+    batch_size: 2
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.005
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 600
+    runs: 20
+
+  AmazonPhoto:
+    architecture:
+      num_layers: 10
+      hidden_channels: 64
+      alpha: 0.2
+      dropout: 0.5
+    num_parts: 16
+    batch_size: 8
+    num_workers: 0
+    lr: 0.01
+    reg_weight_decay: 0.005
+    nonreg_weight_decay: 0
+    grad_norm: 1.0
+    epochs: 600
+    runs: 20
+
+  WikiCS:
+    architecture:
+      num_layers: 2
+      hidden_channels: 64
+      alpha: 0.11
+      dropout: 0.4
+    num_parts: 4
+    batch_size: 2
+    num_workers: 0
+    lr: 0.02
+    reg_weight_decay: 0.0005
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 600
+    runs: 20
