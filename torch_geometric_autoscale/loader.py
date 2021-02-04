@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from torch_sparse import SparseTensor
 from torch_geometric.data import Data
 
-relabel_fn = torch.ops.scaling_gnns.relabel_one_hop
+relabel_fn = torch.ops.torch_geometric_autoscale.relabel_one_hop
 
 
 class SubData(NamedTuple):

@@ -164,5 +164,5 @@ class ScalableGNN(torch.nn.Module):
 
     @torch.no_grad()
     def forward_layer(self, layer: int, x: Tensor, adj_t: SparseTensor,
-                      state: Dict[Any]) -> Tensor:
+                      state: Dict[str, Any]) -> Tensor:
         raise NotImplementedError

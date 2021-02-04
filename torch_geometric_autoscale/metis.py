@@ -7,6 +7,8 @@ from torch import Tensor
 from torch_sparse import SparseTensor
 from torch_geometric.data import Data
 
+partition_fn = torch.ops.torch_sparse.partition
+
 
 def metis(adj_t: SparseTensor, num_parts: int, recursive: bool = False,
           log: bool = True) -> Tuple[Tensor, Tensor]:
@@ -22,8 +24,7 @@ def metis(adj_t: SparseTensor, num_parts: int, recursive: bool = False,
         perm, ptr = torch.arange(num_nodes), torch.tensor([0, num_nodes])
     else:
         rowptr, col, _ = adj_t.csr()
-        cluster = torch.ops.torch_sparse.partition(rowptr, col, None,
-                                                   num_parts, recursive)
+        cluster = partition_fn(rowptr, col, None, num_parts, recursive)
         cluster, perm = cluster.sort()
         ptr = torch.ops.torch_sparse.ind2ptr(cluster, num_parts)
 

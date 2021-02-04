@@ -4,9 +4,9 @@ import torch
 from torch import Tensor
 from torch.cuda import Stream
 
-synchronize = torch.ops.scaling_gnns.synchronize
-read_async = torch.ops.scaling_gnns.read_async
-write_async = torch.ops.scaling_gnns.write_async
+synchronize = torch.ops.torch_geometric_autoscale.synchronize
+read_async = torch.ops.torch_geometric_autoscale.read_async
+write_async = torch.ops.torch_geometric_autoscale.write_async
 
 
 class AsyncIOPool(torch.nn.Module):
