@@ -1,0 +1,6 @@
+defaults:
+  - model: pna
+  - dataset: flickr
+device: 0
+root: '/tmp/datasets'
+log_every: 1

@@ -1,4 +1,4 @@
-# Benchmark on Small-scale Graphs
+# Benchmark on Small-Scale Graphs
 
 ```
 python main.py model=gcn dataset=cora root=/tmp/datasets device=0

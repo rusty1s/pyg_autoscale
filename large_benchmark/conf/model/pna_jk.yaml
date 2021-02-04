@@ -1,0 +1,26 @@
+# @package _group_
+name: PNA_JK
+norm: false
+loop: false
+params:
+
+  reddit:
+    architecture:
+      num_layers: 3
+      hidden_channels: 128
+      aggregators: ['mean', 'max']
+      scalers: ['identity', 'amplification']
+      dropout: 0.5
+      drop_input: true
+      batch_norm: true
+      residual: true
+    num_parts: 200
+    batch_size: 100
+    max_steps: 2
+    pool_size: 2
+    num_workers: 0
+    lr: 0.005
+    reg_weight_decay: 0.0
+    nonreg_weight_decay: 0.0
+    grad_norm: 1.0
+    epochs: 400
