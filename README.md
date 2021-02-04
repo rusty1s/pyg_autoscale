@@ -5,8 +5,8 @@
 --------------------------------------------------------------------------------
 
 *PyGAS* is the practical realization of our *<ins>G</ins>NN<ins>A</ins>uto<ins>S</ins>cale* (GAS) framework, which scales arbitrary message-passing GNNs to large graphs.
-*PyGAS* allows for training and inference of GNNs with a constant GPU memory footprint, while it does not drop any input data in comparison to related scalability approaches.
-Our approach based on historical node embeddings is provably able to keep the existing expressiveness properties of the underlying message passing implementation.
+GAS prunes entire sub-trees of the computation graph by utilizing historical embeddings from prior training iterations, leading to constant GPU memory consumption in respect to input node size without dropping any data.
+As a result, our approach is provably able to maintain the expressive power of the original GNN.
 
 *PyGAS* is implemented in [PyTorch](https://pytorch.org/) and utilizes the [PyTorch Geometric](https://github.com/rusty1s/pytorch_geometric) (PyG) library.
 It provides an easy-to-use interface to convert common and custom GNNs from PyG into its scalable variant:
@@ -56,8 +56,8 @@ python setup.py install
 
 * **`torch_geometric_autoscale/`** contains the source code of *PyGAS*
 * **`examples/`** contains examples to demonstrate how to apply GAS in practice
-* **`small_benchmark/`** contains the experiments to validate that GAS resembles full-batch performance
-* **`large_benchmark/`** contains the experiments on large-scale graphs
+* **`small_benchmark/`** includes the experiments to evaluate performance on *small-scale* graphs
+* **`large_benchmark/`** includes the experiments to evaluate performance on *large-scale* graphs
 
 We use [**Hydra**](https://hydra.cc/) to manage hyperparameter configurations.
 
