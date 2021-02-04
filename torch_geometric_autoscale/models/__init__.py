@@ -3,7 +3,6 @@ from .gcn import GCN
 # from .gat import GAT
 # from .appnp import APPNP
 # from .gcn2 import GCN2
-# from .gin import GIN
 # from .pna import PNA
 # from .pna_jk import PNA_JK
 
@@ -13,7 +12,6 @@ __all__ = [
     # 'GAT',
     # 'APPNP',
     # 'GCN2',
-    # 'GIN',
     # 'PNA',
     # 'PNA_JK',
 ]

@@ -27,6 +27,7 @@ data = permute(data, perm, log=True)
 
 loader = SubgraphLoader(data, ptr, batch_size=10, shuffle=True)
 
+# Make use of the pre-defined GCN+GAS model:
 model = GCN(
     num_nodes=data.num_nodes,
     in_channels=in_channels,
@@ -46,11 +47,11 @@ optimizer = torch.optim.Adam([
 criterion = torch.nn.CrossEntropyLoss()
 
 
-def train(data, model, loader, optimizer):
+def train(model, loader, optimizer):
     model.train()
 
     for batch, batch_size, n_id, offset, count in loader:
-        batch = batch.to(device)
+        batch = batch.to(model.device)
         train_mask = batch.train_mask[:batch_size]
 
         optimizer.zero_grad()
@@ -76,10 +77,10 @@ def test(data, model):
 test(data, model)  # Fill history.
 best_val_acc = test_acc = 0
 for epoch in range(1, 201):
-    train(data, model, loader, optimizer)
+    train(model, loader, optimizer)
     train_acc, val_acc, tmp_test_acc = test(data, model)
     if val_acc > best_val_acc:
         best_val_acc = val_acc
         test_acc = tmp_test_acc
-    print(f'Epoch: {epoch:03d}, Train: {train_acc:.4f}, Val: {val_acc:.4f}'
+    print(f'Epoch: {epoch:03d}, Train: {train_acc:.4f}, Val: {val_acc:.4f}, '
           f'Test: {tmp_test_acc:.4f}, Final: {test_acc:.4f}')

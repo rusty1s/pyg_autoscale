@@ -60,9 +60,3 @@ python setup.py install
 * **`large_benchmark/`** includes experiments to evaluate GAS performance on *large-scale* graphs
 
 We use [**Hydra**](https://hydra.cc/) to manage hyperparameter configurations.
-
-## Running tests
-
-```
-python setup.py test
-```
