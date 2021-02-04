@@ -6,15 +6,16 @@ import torch.nn.functional as F
 from torch.nn import ModuleList, Linear
 from torch_sparse import SparseTensor
 
-from .base import HistoryGNN
+from torch_geometric_autoscale.models import ScalableGNN
 
 
-class APPNP(HistoryGNN):
+class APPNP(ScalableGNN):
     def __init__(self, num_nodes: int, in_channels, hidden_channels: int,
                  out_channels: int, num_layers: int, alpha: float,
-                 dropout: float = 0.0, device=None, dtype=None):
+                 dropout: float = 0.0, pool_size: Optional[int] = None,
+                 buffer_size: Optional[int] = None, device=None):
         super(APPNP, self).__init__(num_nodes, out_channels, num_layers,
-                                    device, dtype)
+                                    pool_size, buffer_size, device)
 
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -35,50 +36,32 @@ class APPNP(HistoryGNN):
 
     def forward(self, x: Tensor, adj_t: SparseTensor,
                 batch_size: Optional[int] = None,
-                n_id: Optional[Tensor] = None) -> Tensor:
+                n_id: Optional[Tensor] = None, offset: Optional[Tensor] = None,
+                count: Optional[Tensor] = None) -> Tensor:
 
         x = F.dropout(x, p=self.dropout, training=self.training)
         x = self.lins[0](x)
         x = x.relu()
         x = F.dropout(x, p=self.dropout, training=self.training)
-        x = x_0 = self.lins[1](x)
+        x = self.lins[1](x)
+        x_0 = x[:adj_t.size(0)]
 
         for history in self.histories:
             x = (1 - self.alpha) * (adj_t @ x) + self.alpha * x_0
-            x = self.push_and_pull(history, x, batch_size, n_id)
+            x = self.push_and_pull(history, x, batch_size, n_id, offset, count)
 
         x = (1 - self.alpha) * (adj_t @ x) + self.alpha * x_0
-        if batch_size is not None:
-            x = x[:batch_size]
         return x
 
     @torch.no_grad()
-    def mini_inference(self, x: Tensor, loader) -> Tensor:
-        x = F.dropout(x, p=self.dropout, training=self.training)
-        x = self.lins[0](x)
-        x = x.relu()
-        x = F.dropout(x, p=self.dropout, training=self.training)
-        x = x_0 = self.lins[1](x)
+    def forward_layer(self, layer, x, adj_t, state):
+        if layer == 0:
+            x = F.dropout(x, p=self.dropout, training=self.training)
+            x = self.lins[0](x)
+            x = x.relu()
+            x = F.dropout(x, p=self.dropout, training=self.training)
+            x = x_0 = self.lins[1](x)
+            state['x_0'] = x_0[:adj_t.size(0)]
 
-        for history in self.histories:
-            for info in loader:
-                info = info.to(self.device)
-                batch_size, n_id, adj_t, e_id = info
-
-                h = x[n_id]
-                h_0 = x_0[n_id]
-                h = (1 - self.alpha) * (adj_t @ h) + self.alpha * h_0
-                history.push_(h[:batch_size], n_id[:batch_size])
-
-            x = history.pull()
-
-        out = x.new_empty(self.num_nodes, self.out_channels)
-        for info in loader:
-            info = info.to(self.device)
-            batch_size, n_id, adj_t, e_id = info
-            h = x[n_id]
-            h_0 = x_0[n_id]
-            h = (1 - self.alpha) * (adj_t @ h) + self.alpha * h_0
-            out[n_id[:batch_size]] = h
-
-        return out
+        x = (1 - self.alpha) * (adj_t @ x) + self.alpha * state['x_0']
+        return x

@@ -7,8 +7,8 @@ from torch.nn import (ModuleList, Linear, BatchNorm1d, Sequential, ReLU,
                       Identity)
 from torch_sparse import SparseTensor
 
-from scaling_gnns.models.base2 import ScalableGNN
-from scaling_gnns.models.pna import PNAConv
+from torch_geometric_autoscale.models import ScalableGNN
+from torch_geometric_autoscale.models.pna import PNAConv
 
 
 class PNA_JK(ScalableGNN):

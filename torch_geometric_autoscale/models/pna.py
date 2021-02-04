@@ -8,7 +8,7 @@ from torch.nn import ModuleList, Linear, BatchNorm1d
 from torch_sparse import SparseTensor
 from torch_geometric.nn import MessagePassing
 
-from scaling_gnns.models.base2 import ScalableGNN
+from torch_geometric_autoscale.models import ScalableGNN
 
 EPS = 1e-5
 
