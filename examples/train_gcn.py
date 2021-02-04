@@ -16,7 +16,7 @@ args = parser.parse_args()
 torch.manual_seed(12345)
 device = f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu'
 
-data, in_channels, out_channels = get_data(args.root, name='cora')
+data, in_channels, out_channels = get_data(args.root, name='Cora')
 
 # Pre-process adjacency matrix for GCN:
 data.adj_t = gcn_norm(data.adj_t, add_self_loops=True)
@@ -63,7 +63,7 @@ def train(model, loader, optimizer):
 
 
 @torch.no_grad()
-def test(data, model):
+def test(model, data):
     model.eval()
 
     out = model(data.x.to(model.device), data.adj_t.to(model.device)).cpu()
@@ -78,7 +78,7 @@ test(data, model)  # Fill history.
 best_val_acc = test_acc = 0
 for epoch in range(1, 201):
     train(model, loader, optimizer)
-    train_acc, val_acc, tmp_test_acc = test(data, model)
+    train_acc, val_acc, tmp_test_acc = test(model, data)
     if val_acc > best_val_acc:
         best_val_acc = val_acc
         test_acc = tmp_test_acc

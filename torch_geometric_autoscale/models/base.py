@@ -74,7 +74,9 @@ class ScalableGNN(torch.nn.Module):
                        and n_id is not None and offset is not None
                        and count is not None)
 
-        if batch_size is not None and not self._async:
+        if (batch_size is not None and not self._async
+                and str(self.emb_device) == 'cpu'
+                and str(self.device)[:4] == 'cuda'):
             warnings.warn('Asynchronous I/O disabled, although history and '
                           'model sit on different devices.')
 

@@ -61,8 +61,9 @@ class GCN(ScalableGNN):
 
     def reset_parameters(self):
         super(GCN, self).reset_parameters()
-        for lin in self.lins:
-            lin.reset_parameters()
+        if self.linear:
+            for lin in self.lins:
+                lin.reset_parameters()
         for conv in self.convs:
             conv.reset_parameters()
         for bn in self.bns:
