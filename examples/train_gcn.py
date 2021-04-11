@@ -74,7 +74,7 @@ def test(model, data):
     return train_acc, val_acc, test_acc
 
 
-test(data, model)  # Fill history.
+test(model, data)  # Fill history.
 best_val_acc = test_acc = 0
 for epoch in range(1, 201):
     train(model, loader, optimizer)
