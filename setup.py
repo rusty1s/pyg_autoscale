@@ -67,7 +67,6 @@ def get_extensions():
     return extensions
 
 
-__version__ = '0.0.0'
 install_requires = ['ogb', 'hydra-core']
 setup_requires = ['pytest-runner']
 tests_require = ['pytest', 'pytest-cov']
