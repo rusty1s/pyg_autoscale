@@ -6,7 +6,7 @@
 
 *PyGAS* is the practical realization of our *<ins>G</ins>NN<ins>A</ins>uto<ins>S</ins>cale* (GAS) framework, which scales arbitrary message-passing GNNs to large graphs, as described in our paper:
 
-Matthias Fey, Jan E. Lenssen, Frank Weichert, Jure Leskovec: [GNNAutoScale: Scalable and Expressive Graph Neural Networks via Historical Embeddings]() *(ICML 2021)*
+Matthias Fey, Jan E. Lenssen, Frank Weichert, Jure Leskovec: **[GNNAutoScale: Scalable and Expressive Graph Neural Networks via Historical Embeddings]()** *(ICML 2021)*
 
 GAS prunes entire sub-trees of the computation graph by utilizing historical embeddings from prior training iterations, leading to constant GPU memory consumption in respect to input node size without dropping any data.
 As a result, our approach is provably able to maintain the expressive power of the original GNN.
@@ -42,8 +42,8 @@ class GNN(ScalableGNN):
 * Install [**PyTorch Geometric >= 1.7.0**](https://github.com/rusty1s/pytorch_geometric#installation):
 
 ```
-pip install --no-index torch-scatter -f https://pytorch-geometric.com/whl/torch-${TORCH}+${CUDA}.html
-pip install --no-index torch-sparse -f https://pytorch-geometric.com/whl/torch-${TORCH}+${CUDA}.html
+pip install torch-scatter -f https://pytorch-geometric.com/whl/torch-${TORCH}+${CUDA}.html
+pip install torch-sparse -f https://pytorch-geometric.com/whl/torch-${TORCH}+${CUDA}.html
 pip install torch-geometric
 ```
 
