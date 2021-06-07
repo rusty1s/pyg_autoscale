@@ -43,6 +43,7 @@ perm, ptr = metis(data.adj_t, num_parts=40, log=True)
 data = permute(data, perm, log=True)
 loader = SubgraphLoader(data, ptr, batch_size=10, shuffle=True)
 
+model = GNN(...)
 for batch, *args in loader:
     out = model(batch.x, batch.adj_t, *args)
 ```
