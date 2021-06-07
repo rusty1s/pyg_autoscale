@@ -36,20 +36,26 @@ class GNN(ScalableGNN):
         return self.convs[-1](x, adj_t)
 ```
 
-## Installation
+## Requirements
 
 * Install [**PyTorch >= 1.7.0**](https://pytorch.org/get-started/locally/)
 * Install [**PyTorch Geometric >= 1.7.0**](https://github.com/rusty1s/pytorch_geometric#installation):
 
 ```
-pip install --no-index torch-scatter -f https://pytorch-geometric.com/whl/torch-1.7.0+${CUDA}.html
-pip install --no-index torch-sparse -f https://pytorch-geometric.com/whl/torch-1.7.0+${CUDA}.html
+pip install --no-index torch-scatter -f https://pytorch-geometric.com/whl/torch-${TORCH}+${CUDA}.html
+pip install --no-index torch-sparse -f https://pytorch-geometric.com/whl/torch-${TORCH}+${CUDA}.html
 pip install torch-geometric
 ```
 
-where `${CUDA}` should be replaced by either `cpu`, `cu92`, `cu101`, `cu102`, or `cu110` depending on your PyTorch installation.
+where `${TORCH}` should be replaced by either `1.7.0` or `1.8.0`, and `${CUDA}` should be replaced by either `cpu`, `cu92`, `cu101`, `cu102`, `cu110` or `cu111`, depending on your PyTorch installation.
 
-Then, run:
+## Installation
+
+```
+pip install git+https://github.com/rusty1s/pyg_autoscale.git
+```
+
+or
 
 ```
 python setup.py install
