@@ -22,8 +22,11 @@ from torch_geometric_autoscale import metis, permute, SubgraphLoader
 
 class GNN(ScalableGNN):
     def __init__(self, num_nodes, in_channels, hidden_channels, out_channels, num_layers):
+        # pool_size determines the number of pinned CPU buffers
+        # buffer_size determines the size of pinned CPU buffers
         super(GNN, self).__init__(num_nodes, hidden_channels, num_layers,
                                   pool_size=2, buffer_size=5000)
+
 
         self.convs = ModuleList()
         self.convs.append(SAGEConv(in_channels, hidden_channels))
