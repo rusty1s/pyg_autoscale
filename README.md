@@ -17,6 +17,7 @@ It provides an easy-to-use interface to convert common and custom GNNs from PyG 
 ```python
 from torch_geometric.nn import GCNConv
 from torch_geometric_autoscale import ScalableGNN
+from torch_geometric_autoscale import metis, permute, SubgraphLoader
 
 
 class GNN(ScalableGNN):
