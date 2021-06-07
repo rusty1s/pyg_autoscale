@@ -4,7 +4,10 @@
 
 --------------------------------------------------------------------------------
 
-*PyGAS* is the practical realization of our *<ins>G</ins>NN<ins>A</ins>uto<ins>S</ins>cale* (GAS) framework, which scales arbitrary message-passing GNNs to large graphs.
+*PyGAS* is the practical realization of our *<ins>G</ins>NN<ins>A</ins>uto<ins>S</ins>cale* (GAS) framework, which scales arbitrary message-passing GNNs to large graphs, as described in our paper:
+
+Matthias Fey, Jan E. Lenssen, Frank Weichert, Jure Leskovec: [GNNAutoScale: Scalable and Expressive Graph Neural Networks via Historical Embeddings]() *(ICML 2021)*
+
 GAS prunes entire sub-trees of the computation graph by utilizing historical embeddings from prior training iterations, leading to constant GPU memory consumption in respect to input node size without dropping any data.
 As a result, our approach is provably able to maintain the expressive power of the original GNN.
 
@@ -36,9 +39,8 @@ class GNN(ScalableGNN):
 ## Installation
 
 * Install [**PyTorch >= 1.7.0**](https://pytorch.org/get-started/locally/)
-* Install [**PyTorch Geometric >= 1.7.0**](https://github.com/rusty1s/pytorch_geometric#installation)
+* Install [**PyTorch Geometric >= 1.7.0**](https://github.com/rusty1s/pytorch_geometric#installation):
 
-For example, via
 ```
 pip install --no-index torch-scatter -f https://pytorch-geometric.com/whl/torch-1.7.0+${CUDA}.html
 pip install --no-index torch-sparse -f https://pytorch-geometric.com/whl/torch-1.7.0+${CUDA}.html
@@ -61,3 +63,16 @@ python setup.py install
 * **`large_benchmark/`** includes experiments to evaluate GAS performance on *large-scale* graphs
 
 We use [**Hydra**](https://hydra.cc/) to manage hyperparameter configurations.
+
+## Cite
+
+Please cite [our paper]() if you use this code in your own work:
+
+```
+@inproceedings{Fey/etal/2021,
+  title={{GNNAutoScale}: Scalable and Expressive Graph Neural Networks via Historical Embeddings},
+  author={Fey, M. and Lenssen, J. E. and Weichert, F. and Leskovec, J.},
+  booktitle={International Conference on Machine Learning (ICML)},
+  year={2021},
+}
+```

@@ -37,7 +37,7 @@ def get_extensions():
         nvcc_flags += ['-arch=sm_35', '--expt-relaxed-constexpr']
         extra_compile_args['nvcc'] = nvcc_flags
 
-    extensions_dir = osp.join(osp.dirname(osp.abspath(__file__)), 'csrc')
+    extensions_dir = osp.join('csrc')
     main_files = glob.glob(osp.join(extensions_dir, '*.cpp'))
     extensions = []
     for main in main_files:
@@ -74,11 +74,14 @@ tests_require = ['pytest', 'pytest-cov']
 setup(
     name='torch_geometric_autoscale',
     version='0.0.0',
-    description='PyGAS: Auto-Scaling in PyG',
+    author='Matthias Fey',
+    author_email='matthias.fey@tu-dortmund.de',
+    description='PyGAS: Auto-Scaling GNNs in PyTorch Geometric',
     python_requires='>=3.6',
     install_requires=install_requires,
     setup_requires=setup_requires,
     tests_require=tests_require,
+    extras_require={'test': tests_require},
     ext_modules=get_extensions(),
     cmdclass={
         'build_ext':
