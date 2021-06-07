@@ -60,7 +60,6 @@ def train(model, loader, optimizer):
         train_mask = batch.train_mask[:out.size(0)]
         loss = criterion(out[train_mask], batch.y[:out.size(0)][train_mask])
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
 
 
