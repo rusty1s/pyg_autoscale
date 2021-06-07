@@ -15,7 +15,7 @@ As a result, our approach is provably able to maintain the expressive power of t
 It provides an easy-to-use interface to convert common and custom GNNs from PyG into its scalable variant:
 
 ```python
-from torch_geometric.nn import GCNConv
+from torch_geometric.nn import SAGEConv
 from torch_geometric_autoscale import ScalableGNN
 from torch_geometric_autoscale import metis, permute, SubgraphLoader
 
@@ -26,10 +26,10 @@ class GNN(ScalableGNN):
                                   pool_size=2, buffer_size=5000)
 
         self.convs = ModuleList()
-        self.convs.append(GCNConv(in_channels, hidden_channels))
+        self.convs.append(SAGEConv(in_channels, hidden_channels))
         for _ in range(num_layers - 2):
-            self.convs.append(GCNConv(hidden_channels, hidden_channels))
-        self.convs.append(GCNConv(hidden_channels, out_channels))
+            self.convs.append(SAGEConv(hidden_channels, hidden_channels))
+        self.convs.append(SAGEConv(hidden_channels, out_channels))
 
     def forward(self, x, adj_t, *args):
         for conv, history in zip(self.convs[:-1], self.histories):
