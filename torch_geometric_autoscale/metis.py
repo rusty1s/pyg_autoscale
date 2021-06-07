@@ -46,9 +46,9 @@ def permute(data: Union[Data, SparseTensor], perm: Tensor,
         for key, item in data:
             if isinstance(item, Tensor) and item.size(0) == data.num_nodes:
                 data[key] = item[perm]
-            if isinstance(item, Tensor) and item.size(0) == data.num_edges:
+            elif isinstance(item, Tensor) and item.size(0) == data.num_edges:
                 raise NotImplementedError
-            if isinstance(item, SparseTensor):
+            elif isinstance(item, SparseTensor):
                 data[key] = permute(item, perm, log=False)
     else:
         data = data.permute(perm)

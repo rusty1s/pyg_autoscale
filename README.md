@@ -21,7 +21,8 @@ from torch_geometric_autoscale import ScalableGNN
 
 class GNN(ScalableGNN):
     def __init__(self, num_nodes, in_channels, hidden_channels, out_channels, num_layers):
-        super(GNN, self).__init__(num_nodes, hidden_channels, num_layers)
+        super(GNN, self).__init__(num_nodes, hidden_channels, num_layers,
+                                  pool_size=2, buffer_size=5000)
 
         self.convs = ModuleList()
         self.convs.append(GCNConv(in_channels, hidden_channels))
@@ -29,11 +30,20 @@ class GNN(ScalableGNN):
             self.convs.append(GCNConv(hidden_channels, hidden_channels))
         self.convs.append(GCNConv(hidden_channels, out_channels))
 
-    def forward(self, x, adj_t, batch_size, n_id):
+    def forward(self, x, adj_t, *args):
         for conv, history in zip(self.convs[:-1], self.histories):
             x = conv(x, adj_t).relu_()
-            x = self.push_and_pull(history, x, batch_size, n_id)
+            x = self.push_and_pull(history, x, *args)
         return self.convs[-1](x, adj_t)
+
+
+
+perm, ptr = metis(data.adj_t, num_parts=40, log=True)
+data = permute(data, perm, log=True)
+loader = SubgraphLoader(data, ptr, batch_size=10, shuffle=True)
+
+for batch, *args in loader:
+    out = model(batch.x, batch.adj_t, *args)
 ```
 
 ## Requirements

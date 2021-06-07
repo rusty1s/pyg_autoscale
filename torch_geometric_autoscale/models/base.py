@@ -18,7 +18,7 @@ class ScalableGNN(torch.nn.Module):
         self.num_nodes = num_nodes
         self.hidden_channels = hidden_channels
         self.num_layers = num_layers
-        self.pool_size = num_layers if pool_size is None else pool_size
+        self.pool_size = num_layers - 1 if pool_size is None else pool_size
         self.buffer_size = buffer_size
 
         self.histories = torch.nn.ModuleList([
@@ -59,13 +59,17 @@ class ScalableGNN(torch.nn.Module):
         for history in self.histories:
             history.reset_parameters()
 
-    def __call__(self, x: Optional[Tensor] = None,
-                 adj_t: Optional[SparseTensor] = None,
-                 batch_size: Optional[int] = None,
-                 n_id: Optional[Tensor] = None,
-                 offset: Optional[Tensor] = None,
-                 count: Optional[Tensor] = None, loader=None,
-                 **kwargs) -> Tensor:
+    def __call__(
+        self,
+        x: Optional[Tensor] = None,
+        adj_t: Optional[SparseTensor] = None,
+        batch_size: Optional[int] = None,
+        n_id: Optional[Tensor] = None,
+        offset: Optional[Tensor] = None,
+        count: Optional[Tensor] = None,
+        loader=None,
+        **kwargs,
+    ) -> Tensor:
 
         if loader is not None:
             return self.mini_inference(loader)

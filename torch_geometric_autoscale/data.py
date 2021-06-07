@@ -110,24 +110,25 @@ def get_sbm(root: str, name: str) -> Tuple[Data, int, int]:
 def get_data(root: str, name: str) -> Tuple[Data, int, int]:
     if name.lower() in ['cora', 'citeseer', 'pubmed']:
         return get_planetoid(root, name)
-    if name.lower() in ['coauthorcs', 'coauthorphysics']:
+    elif name.lower() in ['coauthorcs', 'coauthorphysics']:
         return get_coauthor(root, name[8:])
-    if name.lower() in ['amazoncomputers', 'amazonphoto']:
+    elif name.lower() in ['amazoncomputers', 'amazonphoto']:
         return get_amazon(root, name[6:])
-    if name.lower() == 'wikics':
+    elif name.lower() == 'wikics':
         return get_wikics(root)
-    if name.lower() in ['cluster', 'pattern']:
+    elif name.lower() in ['cluster', 'pattern']:
         return get_sbm(root, name)
-    if name.lower() == 'reddit':
+    elif name.lower() == 'reddit':
         return get_reddit(root)
-    if name.lower() == 'ppi':
+    elif name.lower() == 'ppi':
         return get_ppi(root)
-    if name.lower() == 'flickr':
+    elif name.lower() == 'flickr':
         return get_flickr(root)
-    if name.lower() == 'yelp':
+    elif name.lower() == 'yelp':
         return get_yelp(root)
-    if name.lower() in ['ogbn-arxiv', 'arxiv']:
+    elif name.lower() in ['ogbn-arxiv', 'arxiv']:
         return get_arxiv(root)
-    if name.lower() in ['ogbn-products', 'products']:
+    elif name.lower() in ['ogbn-products', 'products']:
         return get_products(root)
-    raise NotImplementedError
+    else:
+        raise NotImplementedError
