@@ -4,8 +4,8 @@ import torch
 from torch_geometric.nn.conv.gcn_conv import gcn_norm
 
 from torch_geometric_autoscale.models import GCN
-from torch_geometric_autoscale import (get_data, metis, permute,
-                                       SubgraphLoader, compute_acc)
+from torch_geometric_autoscale import metis, permute, SubgraphLoader
+from torch_geometric_autoscale import get_data, compute_acc
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', type=str, required=True,
