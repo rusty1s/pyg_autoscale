@@ -10,8 +10,8 @@ def index2mask(idx: Tensor, size: int) -> Tensor:
     return mask
 
 
-def compute_acc(logits: Tensor, y: Tensor,
-                mask: Optional[Tensor] = None) -> float:
+def compute_micro_f1(logits: Tensor, y: Tensor,
+                     mask: Optional[Tensor] = None) -> float:
     if mask is not None:
         logits, y = logits[mask], y[mask]
 
@@ -24,9 +24,12 @@ def compute_acc(logits: Tensor, y: Tensor,
         tp = int((y_true & y_pred).sum())
         fp = int((~y_true & y_pred).sum())
         fn = int((y_true & ~y_pred).sum())
-        precision = tp / (tp + fp)
-        recall = tp / (tp + fn)
-        return 2 * (precision * recall) / (precision + recall)
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.
+        if precision + recall > 0:
+            return 2 * (precision * recall) / (precision + recall)
+        else:
+            return 0.
 
 
 def gen_masks(y: Tensor, train_per_class: int = 20, val_per_class: int = 30,

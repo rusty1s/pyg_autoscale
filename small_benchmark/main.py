@@ -5,8 +5,8 @@ from omegaconf import OmegaConf
 import torch
 from torch_geometric.nn.conv.gcn_conv import gcn_norm
 
-from torch_geometric_autoscale import (get_data, metis, permute,
-                                       SubgraphLoader, models, compute_acc)
+from torch_geometric_autoscale import (get_data, metis, permute, models,
+                                       SubgraphLoader, compute_micro_f1)
 
 torch.manual_seed(123)
 criterion = torch.nn.CrossEntropyLoss()
@@ -50,8 +50,8 @@ def test(run, model, data):
     test_mask = test_mask[:, run] if test_mask.dim() == 2 else test_mask
 
     out = model(data.x, data.adj_t)
-    val_acc = compute_acc(out, data.y, val_mask)
-    test_acc = compute_acc(out, data.y, test_mask)
+    val_acc = compute_micro_f1(out, data.y, val_mask)
+    test_acc = compute_micro_f1(out, data.y, test_mask)
 
     return val_acc, test_acc
 

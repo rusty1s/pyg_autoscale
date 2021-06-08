@@ -7,7 +7,7 @@ from torch_geometric.nn.conv.gcn_conv import gcn_norm
 
 from torch_geometric_autoscale import (get_data, metis, permute,
                                        SubgraphLoader, EvalSubgraphLoader,
-                                       models, compute_acc)
+                                       models, compute_micro_f1)
 from torch_geometric_autoscale.data import get_ppi
 
 torch.manual_seed(123)
@@ -144,17 +144,17 @@ def main(conf):
         loss = mini_train(model, train_loader, criterion, optimizer,
                           params.max_steps, grad_norm)
         out = mini_test(model, eval_loader)
-        train_acc = compute_acc(out, data.y, data.train_mask)
+        train_acc = compute_micro_f1(out, data.y, data.train_mask)
 
         if conf.dataset.name != 'ppi':
-            val_acc = compute_acc(out, data.y, data.val_mask)
-            tmp_test_acc = compute_acc(out, data.y, data.test_mask)
+            val_acc = compute_micro_f1(out, data.y, data.val_mask)
+            tmp_test_acc = compute_micro_f1(out, data.y, data.test_mask)
         else:
             # We need to perform inference on a different graph as PPI is an
             # inductive dataset.
-            val_acc = compute_acc(full_test(model, val_data), val_data.y)
-            tmp_test_acc = compute_acc(full_test(model, test_data),
-                                       test_data.y)
+            val_acc = compute_micro_f1(full_test(model, val_data), val_data.y)
+            tmp_test_acc = compute_micro_f1(full_test(model, test_data),
+                                            test_data.y)
 
         if val_acc > best_val_acc:
             best_val_acc = val_acc

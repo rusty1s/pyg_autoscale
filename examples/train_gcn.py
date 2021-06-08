@@ -5,7 +5,7 @@ from torch_geometric.nn.conv.gcn_conv import gcn_norm
 
 from torch_geometric_autoscale.models import GCN
 from torch_geometric_autoscale import metis, permute, SubgraphLoader
-from torch_geometric_autoscale import get_data, compute_acc
+from torch_geometric_autoscale import get_data, compute_micro_f1
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', type=str, required=True,
@@ -67,9 +67,9 @@ def test(model, data):
 
     # Full-batch inference since the graph is small
     out = model(data.x.to(model.device), data.adj_t.to(model.device)).cpu()
-    train_acc = compute_acc(out, data.y, data.train_mask)
-    val_acc = compute_acc(out, data.y, data.val_mask)
-    test_acc = compute_acc(out, data.y, data.test_mask)
+    train_acc = compute_micro_f1(out, data.y, data.train_mask)
+    val_acc = compute_micro_f1(out, data.y, data.val_mask)
+    test_acc = compute_micro_f1(out, data.y, data.test_mask)
 
     return train_acc, val_acc, test_acc
 

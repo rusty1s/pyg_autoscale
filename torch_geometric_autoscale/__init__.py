@@ -13,7 +13,7 @@ from .data import get_data  # noqa
 from .history import History  # noqa
 from .pool import AsyncIOPool  # noqa
 from .metis import metis, permute  # noqa
-from .utils import compute_acc  # noqa
+from .utils import compute_micro_f1  # noqa
 from .loader import SubgraphLoader, EvalSubgraphLoader  # noqa
 
 __all__ = [
@@ -22,7 +22,7 @@ __all__ = [
     'AsyncIOPool',
     'metis',
     'permute',
-    'compute_acc',
+    'compute_micro_f1',
     'SubgraphLoader',
     'EvalSubgraphLoader',
     '__version__',
