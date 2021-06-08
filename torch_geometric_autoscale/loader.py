@@ -40,12 +40,8 @@ class SubgraphLoader(DataLoader):
         batches = [(i, batches[i]) for i in range(len(batches))]
 
         if batch_size > 1:
-            super(SubgraphLoader, self).__init__(
-                batches,
-                batch_size=batch_size,
-                collate_fn=self.compute_subgraph,
-                **kwargs,
-            )
+            super().__init__(batches, batch_size=batch_size,
+                             collate_fn=self.compute_subgraph, **kwargs)
 
         else:  # If `batch_size=1`, we pre-process the subgraph generation:
             if log:
@@ -59,12 +55,8 @@ class SubgraphLoader(DataLoader):
             if log:
                 print(f'Done! [{time.perf_counter() - t:.2f}s]')
 
-            super(SubgraphLoader, self).__init__(
-                data_list,
-                batch_size=batch_size,
-                collate_fn=lambda x: x[0],
-                **kwargs,
-            )
+            super().__init__(data_list, batch_size=batch_size,
+                             collate_fn=lambda x: x[0], **kwargs)
 
     def compute_subgraph(self, batches: List[Tuple[int, Tensor]]) -> SubData:
         batch_ids, n_ids = zip(*batches)
@@ -112,13 +104,5 @@ class EvalSubgraphLoader(SubgraphLoader):
         if int(ptr[-1]) != data.num_nodes:
             ptr = torch.cat([ptr, torch.tensor(data.num_nodes)], dim=0)
 
-        super(EvalSubgraphLoader, self).__init__(
-            data=data,
-            ptr=ptr,
-            batch_size=1,
-            bipartite=bipartite,
-            log=log,
-            shuffle=False,
-            num_workers=0,
-            **kwargs,
-        )
+        super().__init__(data=data, ptr=ptr, batch_size=1, bipartite=bipartite,
+                         log=log, shuffle=False, num_workers=0, **kwargs)
