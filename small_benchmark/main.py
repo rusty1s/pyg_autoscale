@@ -87,7 +87,7 @@ def main(conf):
         num_nodes=data.num_nodes,
         in_channels=in_channels,
         out_channels=out_channels,
-        device=device,  # Put histories on GPU.
+        device=device,  # ... and put histories on GPU as well.
         **params.architecture,
     ).to(device)
 

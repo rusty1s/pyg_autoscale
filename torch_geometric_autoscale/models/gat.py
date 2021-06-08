@@ -43,8 +43,6 @@ class GAT(ScalableGNN):
         super().reset_parameters()
         for conv in self.convs:
             conv.reset_parameters()
-        for lin in self.lins:
-            lin.reset_parameters()
 
     def forward(self, x: Tensor, adj_t: SparseTensor, *args) -> Tensor:
         for conv, history in zip(self.convs[:-1], self.histories):
