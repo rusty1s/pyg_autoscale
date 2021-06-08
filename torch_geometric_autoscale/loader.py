@@ -14,9 +14,9 @@ relabel_fn = torch.ops.torch_geometric_autoscale.relabel_one_hop
 class SubData(NamedTuple):
     data: Data
     batch_size: int
-    n_id: Tensor
-    offset: Tensor
-    count: Tensor
+    n_id: Tensor  # The indices of mini-batched nodes
+    offset: Tensor  # The offset of contiguous mini-batched nodes
+    count: Tensor  # The number of contiguous mini-batched nodes
 
     def to(self, *args, **kwargs):
         return SubData(self.data.to(*args, **kwargs), self.batch_size,
@@ -25,8 +25,8 @@ class SubData(NamedTuple):
 
 class SubgraphLoader(DataLoader):
     r"""A simple subgraph loader that, given a pre-partioned :obj:`data` object,
-    generates subgraphs (including its 1-hop neighbors) from mini-batches in
-    :obj:`ptr`."""
+    generates subgraphs from mini-batches in :obj:`ptr` (including their 1-hop
+    neighbors)."""
     def __init__(self, data: Data, ptr: Tensor, batch_size: int = 1,
                  bipartite: bool = True, log: bool = True, **kwargs):
 
@@ -91,8 +91,8 @@ class SubgraphLoader(DataLoader):
 
 class EvalSubgraphLoader(SubgraphLoader):
     r"""A simple subgraph loader that, given a pre-partioned :obj:`data` object,
-    generates subgraphs (including its 1-hop neighbors) from mini-batches in
-    :obj:`ptr`.
+    generates subgraphs from mini-batches in :obj:`ptr` (including their 1-hop
+    neighbors).
     In contrast to :class:`SubgraphLoader`, this loader does not generate
     subgraphs from randomly sampled mini-batches, and should therefore only be
     used for evaluation.
@@ -102,7 +102,7 @@ class EvalSubgraphLoader(SubgraphLoader):
 
         ptr = ptr[::batch_size]
         if int(ptr[-1]) != data.num_nodes:
-            ptr = torch.cat([ptr, torch.tensor(data.num_nodes)], dim=0)
+            ptr = torch.cat([ptr, torch.tensor([data.num_nodes])], dim=0)
 
         super().__init__(data=data, ptr=ptr, batch_size=1, bipartite=bipartite,
                          log=log, shuffle=False, num_workers=0, **kwargs)

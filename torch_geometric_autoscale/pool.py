@@ -14,8 +14,8 @@ class AsyncIOPool(torch.nn.Module):
         super(AsyncIOPool, self).__init__()
 
         self.pool_size = pool_size
-        self.embedding_dim = embedding_dim
         self.buffer_size = buffer_size
+        self.embedding_dim = embedding_dim
 
         self._device = torch.device('cpu')
         self._pull_queue = []
@@ -61,6 +61,7 @@ class AsyncIOPool(torch.nn.Module):
     @torch.no_grad()
     def async_pull(self, src: Tensor, offset: Optional[Tensor],
                    count: Optional[Tensor], index: Tensor) -> None:
+        # Start pulling `src` at ([offset, count] and index positions:
         self._pull_index = (self._pull_index + 1) % self.pool_size
         data = (self._pull_index, src, offset, count, index)
         self._pull_queue.append(data)
@@ -76,6 +77,7 @@ class AsyncIOPool(torch.nn.Module):
 
     @torch.no_grad()
     def synchronize_pull(self) -> Tensor:
+        # Synchronize the next pull command:
         idx = self._pull_queue[0][0]
         synchronize()
         torch.cuda.synchronize(self._pull_stream(idx))
@@ -83,17 +85,19 @@ class AsyncIOPool(torch.nn.Module):
 
     @torch.no_grad()
     def free_pull(self) -> None:
+        # Free the buffer space and start pulling from remaining queue:
         self._pull_queue.pop(0)
         if len(self._pull_queue) >= self.pool_size:
             data = self._pull_queue[self.pool_size - 1]
             idx, src, offset, count, index = data
             self._async_pull(idx, src, offset, count, index)
-        if len(self._pull_queue) == 0:
+        elif len(self._pull_queue) == 0:
             self._pull_index = -1
 
     @torch.no_grad()
     def async_push(self, src: Tensor, offset: Tensor, count: Tensor,
                    dst: Tensor) -> None:
+        # Start pushing `src` to ([offset, count] and index positions to `dst`:
         self._push_index = (self._push_index + 1) % self.pool_size
         self.synchronize_push(self._push_index)
         self._push_cache[self._push_index] = src
@@ -102,6 +106,7 @@ class AsyncIOPool(torch.nn.Module):
 
     @torch.no_grad()
     def synchronize_push(self, idx: Optional[int] = None) -> None:
+        # Synchronize the push command of stream `idx` or all commands:
         if idx is None:
             for idx in range(self.pool_size):
                 self.synchronize_push(idx)

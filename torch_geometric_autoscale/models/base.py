@@ -6,7 +6,8 @@ import torch
 from torch import Tensor
 from torch_sparse import SparseTensor
 
-from torch_geometric_autoscale import History, AsyncIOPool, SubgraphLoader
+from torch_geometric_autoscale import History, AsyncIOPool
+from torch_geometric_autoscale import SubgraphLoader, EvalSubgraphLoader
 
 
 class ScalableGNN(torch.nn.Module):
@@ -26,9 +27,8 @@ class ScalableGNN(torch.nn.Module):
             for _ in range(num_layers - 1)
         ])
 
-        self.pool = None
+        self.pool: Optional[AsyncIOPool] = None
         self._async = False
-        self.__out__ = None
 
     @property
     def emb_device(self):
@@ -38,15 +38,9 @@ class ScalableGNN(torch.nn.Module):
     def device(self):
         return self.histories[0]._device
 
-    @property
-    def _out(self):
-        if self.__out__ is None:
-            self.__out__ = torch.empty(self.num_nodes, self.out_channels,
-                                       pin_memory=True)
-        return self.__out__
-
     def _apply(self, fn: Callable) -> None:
         super(ScalableGNN, self)._apply(fn)
+        # We only initialize the AsyncIOPool in case histories are on CPU:
         if (str(self.emb_device) == 'cpu' and str(self.device)[:4] == 'cuda'
                 and self.pool_size is not None
                 and self.buffer_size is not None):
@@ -67,13 +61,15 @@ class ScalableGNN(torch.nn.Module):
         n_id: Optional[Tensor] = None,
         offset: Optional[Tensor] = None,
         count: Optional[Tensor] = None,
-        loader=None,
+        loader: EvalSubgraphLoader = None,
         **kwargs,
     ) -> Tensor:
 
         if loader is not None:
             return self.mini_inference(loader)
 
+        # We only perform asynchronous history transfer in case the following
+        # conditions are met:
         self._async = (self.pool is not None and batch_size is not None
                        and n_id is not None and offset is not None
                        and count is not None)
@@ -103,6 +99,7 @@ class ScalableGNN(torch.nn.Module):
                       n_id: Optional[Tensor] = None,
                       offset: Optional[Tensor] = None,
                       count: Optional[Tensor] = None) -> Tensor:
+        r"""Push and pull information from `x` to `history` and vice versa."""
 
         if n_id is None and x.size(0) != self.num_nodes:
             return x  # Do nothing...
@@ -122,11 +119,19 @@ class ScalableGNN(torch.nn.Module):
             h = history.pull(n_id[batch_size:])
             return torch.cat([x[:batch_size], h], dim=0)
 
-        out = self.pool.synchronize_pull()[:n_id.numel() - batch_size]
-        self.pool.async_push(x[:batch_size], offset, count, history.emb)
-        out = torch.cat([x[:batch_size], out], dim=0)
-        self.pool.free_pull()
-        return out
+        else:
+            out = self.pool.synchronize_pull()[:n_id.numel() - batch_size]
+            self.pool.async_push(x[:batch_size], offset, count, history.emb)
+            out = torch.cat([x[:batch_size], out], dim=0)
+            self.pool.free_pull()
+            return out
+
+    @property
+    def _out(self):
+        if self.__out is None:
+            self.__out = torch.empty(self.num_nodes, self.out_channels,
+                                     pin_memory=True)
+        return self.__out
 
     @torch.no_grad()
     def mini_inference(self, loader: SubgraphLoader) -> Tensor:
