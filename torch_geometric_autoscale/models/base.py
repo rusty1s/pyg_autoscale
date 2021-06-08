@@ -88,8 +88,7 @@ class ScalableGNN(torch.nn.Module):
             for hist in self.histories:
                 self.pool.async_pull(hist.emb, None, None, n_id[batch_size:])
 
-        out = self.forward(x=x, adj_t=adj_t, batch_size=batch_size, n_id=n_id,
-                           offset=offset, count=count, **kwargs)
+        out = self.forward(x, adj_t, batch_size, n_id, offset, count, **kwargs)
 
         if self._async:
             for hist in self.histories:
