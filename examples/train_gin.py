@@ -105,6 +105,7 @@ class GIN(ScalableGNN):
 
     @torch.no_grad()
     def forward_layer(self, layer: int, x: Tensor, adj_t: SparseTensor, state):
+        # Perform layer-wise inference:
         if layer == 0:
             x = self.lins[0](x).relu_()
 
@@ -149,6 +150,13 @@ def train(model, loader, optimizer):
 
 
 @torch.no_grad()
+def mini_test(model, loader, y):
+    model.eval()
+    out = model(loader=loader)
+    return int((out.argmax(dim=-1) == y).sum()) / y.size(0)
+
+
+@torch.no_grad()
 def full_test(model, loader):
     model.eval()
 
@@ -160,13 +168,6 @@ def full_test(model, loader):
         total_examples += out.size(0)
 
     return total_correct / total_examples
-
-
-@torch.no_grad()
-def mini_test(model, loader, y):
-    model.eval()
-    out = model(loader=loader)
-    return int((out.argmax(dim=-1) == y).sum()) / y.size(0)
 
 
 mini_test(model, eval_loader, data.y)  # Fill history.
