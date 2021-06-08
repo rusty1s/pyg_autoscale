@@ -37,6 +37,7 @@ def mini_train(model, loader, criterion, optimizer, max_steps, grad_norm=None):
         total_loss += float(loss) * int(train_mask.sum())
         total_examples += int(train_mask.sum())
 
+        # We abort after a fixed number of steps to refresh histories...
         if (i + 1) >= max_steps and (i + 1) < len(loader):
             break
 
@@ -106,6 +107,8 @@ def main(conf):
 
     t = time.perf_counter()
     print('Calculating buffer size...', end=' ', flush=True)
+    # We reserve a much larger buffer size than what is actually needed for
+    # training in order to perform efficient history accesses during inference.
     buffer_size = max([n_id.numel() for _, _, n_id, _, _ in eval_loader])
     print(f'Done! [{time.perf_counter() - t:.2f}s] -> {buffer_size}')
 
@@ -147,6 +150,8 @@ def main(conf):
             val_acc = compute_acc(out, data.y, data.val_mask)
             tmp_test_acc = compute_acc(out, data.y, data.test_mask)
         else:
+            # We need to perform inference on a different graph as PPI is an
+            # inductive dataset.
             val_acc = compute_acc(full_test(model, val_data), val_data.y)
             tmp_test_acc = compute_acc(full_test(model, test_data),
                                        test_data.y)
