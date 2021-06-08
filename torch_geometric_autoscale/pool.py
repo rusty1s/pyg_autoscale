@@ -11,7 +11,7 @@ write_async = torch.ops.torch_geometric_autoscale.write_async
 
 class AsyncIOPool(torch.nn.Module):
     def __init__(self, pool_size: int, buffer_size: int, embedding_dim: int):
-        super(AsyncIOPool, self).__init__()
+        super().__init__()
 
         self.pool_size = pool_size
         self.buffer_size = buffer_size

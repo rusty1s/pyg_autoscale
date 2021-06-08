@@ -14,8 +14,8 @@ class APPNP(ScalableGNN):
                  out_channels: int, num_layers: int, alpha: float,
                  dropout: float = 0.0, pool_size: Optional[int] = None,
                  buffer_size: Optional[int] = None, device=None):
-        super(APPNP, self).__init__(num_nodes, out_channels, num_layers,
-                                    pool_size, buffer_size, device)
+        super().__init__(num_nodes, out_channels, num_layers, pool_size,
+                         buffer_size, device)
 
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -30,15 +30,11 @@ class APPNP(ScalableGNN):
         self.nonreg_modules = self.lins[1:]
 
     def reset_parameters(self):
-        super(APPNP, self).reset_parameters()
+        super().reset_parameters()
         for lin in self.lins:
             lin.reset_parameters()
 
-    def forward(self, x: Tensor, adj_t: SparseTensor,
-                batch_size: Optional[int] = None,
-                n_id: Optional[Tensor] = None, offset: Optional[Tensor] = None,
-                count: Optional[Tensor] = None) -> Tensor:
-
+    def forward(self, x: Tensor, adj_t: SparseTensor, *args) -> Tensor:
         x = F.dropout(x, p=self.dropout, training=self.training)
         x = self.lins[0](x)
         x = x.relu()
@@ -48,7 +44,7 @@ class APPNP(ScalableGNN):
 
         for history in self.histories:
             x = (1 - self.alpha) * (adj_t @ x) + self.alpha * x_0
-            x = self.push_and_pull(history, x, batch_size, n_id, offset, count)
+            x = self.push_and_pull(history, x, *args)
 
         x = (1 - self.alpha) * (adj_t @ x) + self.alpha * x_0
         return x

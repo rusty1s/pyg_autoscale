@@ -14,7 +14,7 @@ class ScalableGNN(torch.nn.Module):
     def __init__(self, num_nodes: int, hidden_channels: int, num_layers: int,
                  pool_size: Optional[int] = None,
                  buffer_size: Optional[int] = None, device=None):
-        super(ScalableGNN, self).__init__()
+        super().__init__()
 
         self.num_nodes = num_nodes
         self.hidden_channels = hidden_channels
@@ -40,7 +40,7 @@ class ScalableGNN(torch.nn.Module):
         return self.histories[0]._device
 
     def _apply(self, fn: Callable) -> None:
-        super(ScalableGNN, self)._apply(fn)
+        super()._apply(fn)
         # We only initialize the AsyncIOPool in case histories are on CPU:
         if (str(self.emb_device) == 'cpu' and str(self.device)[:4] == 'cuda'
                 and self.pool_size is not None

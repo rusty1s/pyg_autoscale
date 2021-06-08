@@ -17,8 +17,7 @@ class PNAConv(MessagePassing):
     def __init__(self, in_channels: int, out_channels: int,
                  aggregators: List[str], scalers: List[str], deg: Tensor,
                  **kwargs):
-
-        super(PNAConv, self).__init__(aggr=None, **kwargs)
+        super().__init__(aggr=None, **kwargs)
 
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -83,8 +82,8 @@ class PNA(ScalableGNN):
                  drop_input: bool = True, batch_norm: bool = False,
                  residual: bool = False, pool_size: Optional[int] = None,
                  buffer_size: Optional[int] = None, device=None):
-        super(PNA, self).__init__(num_nodes, hidden_channels, num_layers,
-                                  pool_size, buffer_size, device)
+        super().__init__(num_nodes, hidden_channels, num_layers, pool_size,
+                         buffer_size, device)
 
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -115,17 +114,13 @@ class PNA(ScalableGNN):
         return self.convs[-1:]
 
     def reset_parameters(self):
-        super(PNA, self).reset_parameters()
+        super().reset_parameters()
         for conv in self.convs:
             conv.reset_parameters()
         for bn in self.bns:
             bn.reset_parameters()
 
-    def forward(self, x: Tensor, adj_t: SparseTensor,
-                batch_size: Optional[int] = None,
-                n_id: Optional[Tensor] = None, offset: Optional[Tensor] = None,
-                count: Optional[Tensor] = None) -> Tensor:
-
+    def forward(self, x: Tensor, adj_t: SparseTensor, *args) -> Tensor:
         if self.drop_input:
             x = F.dropout(x, p=self.dropout, training=self.training)
 
@@ -136,7 +131,7 @@ class PNA(ScalableGNN):
             if self.residual and h.size(-1) == x.size(-1):
                 h += x[:h.size(0)]
             x = h.relu_()
-            x = self.push_and_pull(hist, x, batch_size, n_id, offset, count)
+            x = self.push_and_pull(hist, x, *args)
             x = F.dropout(x, p=self.dropout, training=self.training)
 
         x = self.convs[-1](x, adj_t)

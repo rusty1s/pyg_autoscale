@@ -10,7 +10,6 @@ params:
       hidden_channels: 8
       hidden_heads: 8
       out_heads: 1
-      residual: false
       dropout: 0.6
     num_parts: 40
     batch_size: 10
@@ -28,7 +27,6 @@ params:
       hidden_channels: 8
       hidden_heads: 8
       out_heads: 1
-      residual: false
       dropout: 0.6
     num_parts: 24
     batch_size: 8
@@ -46,7 +44,6 @@ params:
       hidden_channels: 8
       hidden_heads: 8
       out_heads: 8
-      residual: false
       dropout: 0.6
     num_parts: 4
     batch_size: 1
@@ -64,7 +61,6 @@ params:
       hidden_channels: 8
       hidden_heads: 8
       out_heads: 1
-      residual: false
       dropout: 0.6
     num_parts: 8
     batch_size: 2
@@ -82,7 +78,6 @@ params:
       hidden_channels: 8
       hidden_heads: 8
       out_heads: 1
-      residual: false
       dropout: 0.6
     num_parts: 4
     batch_size: 1
@@ -100,7 +95,6 @@ params:
       hidden_channels: 14
       hidden_heads: 5
       out_heads: 1
-      residual: false
       dropout: 0.5
     num_parts: 2
     batch_size: 1
