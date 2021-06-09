@@ -18,7 +18,6 @@ from torch_geometric.nn import SAGEConv
 from torch_geometric_autoscale import ScalableGNN
 from torch_geometric_autoscale import metis, permute, SubgraphLoader
 
-
 class GNN(ScalableGNN):
     def __init__(self, num_nodes, in_channels, hidden_channels, out_channels, num_layers):
         # pool_size determines the number of pinned CPU buffers
@@ -40,8 +39,6 @@ class GNN(ScalableGNN):
             x = conv(x, adj_t).relu_()
             x = self.push_and_pull(history, x, *args)
         return self.convs[-1](x, adj_t)
-
-
 
 perm, ptr = metis(data.adj_t, num_parts=40, log=True)
 data = permute(data, perm, log=True)
