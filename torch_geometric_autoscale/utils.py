@@ -59,7 +59,7 @@ def gen_masks(y: Tensor, train_per_class: int = 20, val_per_class: int = 30,
 
 
 def dropout(adj_t: SparseTensor, p: float, training: bool = True):
-    if not training:
+    if not training or p == 0.:
         return adj_t
 
     if adj_t.storage.value() is not None:
