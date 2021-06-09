@@ -35,7 +35,6 @@ class ScalableGNN(torch.nn.Module):
         buffer_size (int, optional): The size of pinned CPU buffers, i.e. the
             maximum number of out-of-mini-batch nodes pulled at once.
             Needs to be set in order to make use of asynchronous memory
-            transfers.
             transfers. (default: :obj:`None`)
     """
     def __init__(self, num_nodes: int, hidden_channels: int, num_layers: int,
