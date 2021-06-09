@@ -8,11 +8,10 @@
 
 Matthias Fey, Jan E. Lenssen, Frank Weichert, Jure Leskovec: **[GNNAutoScale: Scalable and Expressive Graph Neural Networks via Historical Embeddings]()** *(ICML 2021)*
 
-GAS prunes entire sub-trees of the computation graph by utilizing historical embeddings from prior training iterations, leading to constant GPU memory consumption in respect to input node size without dropping any data.
-As a result, our approach is provably able to maintain the expressive power of the original GNN.
+GAS prunes entire sub-trees of the computation graph by utilizing historical embeddings from prior training iterations, leading to constant GPU memory consumption in respect to input mini-batch size, and maximally expressivity.
 
 *PyGAS* is implemented in [PyTorch](https://pytorch.org/) and utilizes the [PyTorch Geometric](https://github.com/rusty1s/pytorch_geometric) (PyG) library.
-It provides an easy-to-use interface to convert common and custom GNNs from PyG into its scalable variant:
+It provides an easy-to-use interface to convert a common and custom GNN from PyG into its scalable variant:
 
 ```python
 from torch_geometric.nn import SAGEConv
