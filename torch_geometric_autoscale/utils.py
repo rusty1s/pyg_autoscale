@@ -66,7 +66,7 @@ def dropout(adj_t: SparseTensor, p: float, training: bool = True):
         value = F.dropout(adj_t.storage.value(), p=p)
         adj_t = adj_t.set_value(value, layout='coo')
     else:
-        mask = torch.rand(adj_t.nnz(), device=adj_t.storage().row.device) > p
+        mask = torch.rand(adj_t.nnz(), device=adj_t.storage.row().device) > p
         adj_t = adj_t.masked_select_nnz(mask, layout='coo')
 
     return adj_t
