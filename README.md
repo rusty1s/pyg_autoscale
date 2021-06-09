@@ -53,6 +53,8 @@ for batch, *args in loader:
     out = model(batch.x, batch.adj_t, *args)
 ```
 
+A detailed decription of `ScalableGNN` can be found [in its implementation](https://github.com/rusty1s/pyg_autoscale/blob/master/torch_geometric_autoscale/models/base.py#L13).
+
 ## Requirements
 
 * Install [**PyTorch >= 1.7.0**](https://pytorch.org/get-started/locally/)
