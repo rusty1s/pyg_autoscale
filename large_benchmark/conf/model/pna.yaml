@@ -87,3 +87,25 @@ params:
     nonreg_weight_decay: 0.0
     grad_norm: 1.0
     epochs: 400
+
+  products:
+    architecture:
+      num_layers: 3
+      hidden_channels: 256
+      aggregators: ['mean']
+      scalers: ['identity', 'amplification']
+      dropout: 0.2
+      drop_input: false
+      batch_norm: false
+      residual: false
+    num_parts: 150
+    batch_size: 1
+    max_steps: 151
+    pool_size: 1
+    num_workers: 0
+    lr: 0.001
+    reg_weight_decay: 0
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 350
+    runs: 1

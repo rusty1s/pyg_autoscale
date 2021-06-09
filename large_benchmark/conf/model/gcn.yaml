@@ -113,8 +113,8 @@ params:
     num_parts: 7
     batch_size: 1
     max_steps: 4
-    pool_size: 2
-    num_workers: 6
+    pool_size: 1
+    num_workers: 0
     lr: 0.005
     reg_weight_decay: 0
     nonreg_weight_decay: 0
