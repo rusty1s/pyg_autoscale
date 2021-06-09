@@ -24,11 +24,12 @@ def compute_micro_f1(logits: Tensor, y: Tensor,
         tp = int((y_true & y_pred).sum())
         fp = int((~y_true & y_pred).sum())
         fn = int((y_true & ~y_pred).sum())
-        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.
-        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.
-        if precision + recall > 0:
+
+        try:
+            precision = tp / (tp + fp)
+            recall = tp / (tp + fn)
             return 2 * (precision * recall) / (precision + recall)
-        else:
+        except ZeroDivisionError:
             return 0.
 
 
