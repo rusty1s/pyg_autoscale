@@ -2,6 +2,8 @@ from typing import Optional, Tuple
 
 import torch
 from torch import Tensor
+import torch.nn.functional as F
+from torch_sparse import SparseTensor
 
 
 def index2mask(idx: Tensor, size: int) -> Tensor:
@@ -54,3 +56,17 @@ def gen_masks(y: Tensor, train_per_class: int = 20, val_per_class: int = 30,
     test_mask = ~(train_mask | val_mask)
 
     return train_mask, val_mask, test_mask
+
+
+def dropout(adj_t: SparseTensor, p: float, training: bool = True):
+    if not training:
+        return adj_t
+
+    if adj_t.storage.value() is not None:
+        value = F.dropout(adj_t.storage.value(), p=p)
+        adj_t = adj_t.set_value(value, layout='coo')
+    else:
+        mask = torch.rand(adj_t.nnz(), device=adj_t.storage().row.device) > p
+        adj_t = adj_t.masked_select_nnz(mask, layout='coo')
+
+    return adj_t
