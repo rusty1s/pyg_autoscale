@@ -15,12 +15,14 @@ class ScalableGNN(torch.nn.Module):
     embeddings.
     This class will take care of initializing :obj:`num_layers - 1` historical
     embeddings, and provides a convenient interface to push recent node
-    embeddings to the history and pulling embeddings from the history.
+    embeddings to the history, and to pull previous embeddings from the
+    history.
     In case historical embeddings are stored on the CPU, they will reside
-    inside pinned memory, which allows for an asynchronous memory transfers of
-    histories.
+    inside pinned memory, which allows for asynchronous memory transfers of
+    historical embeddings.
     For this, this class maintains a :class:`AsyncIOPool` object that
-    implements the underlying mechanisms of asynchronous memory transfers.
+    implements the underlying mechanisms of asynchronous memory transfers as
+    described in our paper.
 
     Args:
         num_nodes (int): The number of nodes in the graph.
@@ -91,17 +93,17 @@ class ScalableGNN(torch.nn.Module):
         loader: EvalSubgraphLoader = None,
         **kwargs,
     ) -> Tensor:
-        r"""Extends the call of forward propagation by immediately start
-        pulling historical embeddings for each layer asynchronously.
-        After forward propogation, pushing node embeddings to histories will be
-        synchronized.
+        r"""Enhances the call of forward propagation by immediately start
+        pulling historical embeddings for all layers asynchronously.
+        After forward propogation is completed, the push of node embeddings to
+        the histories will be synchronized.
 
-        For example, given a mini-batch with
+        For example, given a mini-batch with node indices
         :obj:`n_id = [0, 1, 5, 6, 7, 3, 4]`, where the first 5 nodes
         represent the mini-batched nodes, and nodes :obj:`3` and :obj:`4`
         denote out-of-mini-batched nodes (i.e. the 1-hop neighbors of the
         mini-batch that are not included in the current mini-batch), then
-        other input arguments are given as:
+        other input arguments should be given as:
 
         .. code-block:: python
 
@@ -196,8 +198,11 @@ class ScalableGNN(torch.nn.Module):
 
     @torch.no_grad()
     def mini_inference(self, loader: SubgraphLoader) -> Tensor:
-        r"""An implementation of a layer-wise evaluation of GNNs.
-        For each layer, :meth:`forward_layer` will be called."""
+        r"""An implementation of layer-wise evaluation of GNNs.
+        For each individual layer and mini-batch, :meth:`forward_layer` takes
+        care of computing the next state of node embeddings.
+        Additional state (such as residual connections) can be stored in
+        a `state` directory."""
 
         # We iterate over the loader in a layer-wise fashsion.
         # In order to re-use some intermediate representations, we maintain a
