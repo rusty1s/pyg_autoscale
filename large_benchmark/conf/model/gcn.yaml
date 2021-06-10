@@ -119,5 +119,5 @@ params:
     reg_weight_decay: 0
     nonreg_weight_decay: 0
     grad_norm: null
-    epochs: 350
+    epochs: 300
     runs: 1
