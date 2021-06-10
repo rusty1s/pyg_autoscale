@@ -113,3 +113,25 @@ params:
     nonreg_weight_decay: 0
     grad_norm: null
     epochs: 500
+
+  products:
+    architecture:
+      num_layers: 5
+      hidden_channels: 128
+      dropout: 0.0
+      drop_input: false
+      batch_norm: false
+      residual: false
+      shared_weights: false
+      alpha: 0.1
+      theta: 0.5
+    num_parts: 150
+    batch_size: 1
+    max_steps: 151
+    pool_size: 1
+    num_workers: 0
+    lr: 0.001
+    reg_weight_decay: 0
+    nonreg_weight_decay: 0
+    grad_norm: null
+    epochs: 240

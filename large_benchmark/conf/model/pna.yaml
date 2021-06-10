@@ -94,7 +94,7 @@ params:
       hidden_channels: 256
       aggregators: ['mean']
       scalers: ['identity', 'amplification']
-      dropout: 0.2
+      dropout: 0.3
       drop_input: false
       batch_norm: false
       residual: false
@@ -107,5 +107,5 @@ params:
     reg_weight_decay: 0
     nonreg_weight_decay: 0
     grad_norm: null
-    epochs: 350
+    epochs: 150
     runs: 1
