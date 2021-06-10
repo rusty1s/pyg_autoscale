@@ -98,6 +98,7 @@ params:
       drop_input: false
       batch_norm: false
       residual: false
+    edge_dropout: 0.8
     num_parts: 150
     batch_size: 1
     max_steps: 151

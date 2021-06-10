@@ -125,6 +125,7 @@ params:
       shared_weights: false
       alpha: 0.1
       theta: 0.5
+    edge_dropout: 0.8
     num_parts: 150
     batch_size: 1
     max_steps: 151
