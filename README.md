@@ -6,7 +6,7 @@
 
 *PyGAS* is the practical realization of our *<ins>G</ins>NN<ins>A</ins>uto<ins>S</ins>cale* (GAS) framework, which scales arbitrary message-passing GNNs to large graphs, as described in our paper:
 
-Matthias Fey, Jan E. Lenssen, Frank Weichert, Jure Leskovec: **[GNNAutoScale: Scalable and Expressive Graph Neural Networks via Historical Embeddings]()** *(ICML 2021)*
+Matthias Fey, Jan E. Lenssen, Frank Weichert, Jure Leskovec: **[GNNAutoScale: Scalable and Expressive Graph Neural Networks via Historical Embeddings](http://arxiv.org/abs/2106.05609)** *(ICML 2021)*
 
 GAS prunes entire sub-trees of the computation graph by utilizing historical embeddings from prior training iterations, leading to constant GPU memory consumption in respect to input mini-batch size, and maximally expressivity.
 
@@ -87,7 +87,7 @@ We use [**Hydra**](https://hydra.cc/) to manage hyperparameter configurations.
 
 ## Cite
 
-Please cite [our paper]() if you use this code in your own work:
+Please cite [our paper](http://arxiv.org/abs/2106.05609) if you use this code in your own work:
 
 ```
 @inproceedings{Fey/etal/2021,
