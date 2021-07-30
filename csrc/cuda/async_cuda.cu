@@ -73,7 +73,7 @@ void read_async_cuda(torch::Tensor src,
           AT_ASSERTM(dst_offset + c <= dst.size(0), "Invalid index");
           cudaMemcpyAsync(
               dst_data + (dst_offset * size), src_data + (src_offset * size),
-              c * size * sizeof(scalar_t), cudaMemcpyDeviceToHost, stream);
+              c * size * sizeof(scalar_t), cudaMemcpyHostToDevice, stream);
           dst_offset += c;
         }
       }
