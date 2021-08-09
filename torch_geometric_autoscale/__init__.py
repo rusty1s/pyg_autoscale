@@ -15,6 +15,7 @@ from .pool import AsyncIOPool  # noqa
 from .metis import metis, permute  # noqa
 from .utils import compute_micro_f1, gen_masks, dropout  # noqa
 from .loader import SubgraphLoader, EvalSubgraphLoader  # noqa
+from .models import ScalableGNN
 
 __all__ = [
     'get_data',
@@ -27,5 +28,6 @@ __all__ = [
     'dropout',
     'SubgraphLoader',
     'EvalSubgraphLoader',
+    'ScalableGNN',
     '__version__',
 ]
