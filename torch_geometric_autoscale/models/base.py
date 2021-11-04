@@ -108,7 +108,7 @@ class ScalableGNN(torch.nn.Module):
         .. code-block:: python
 
             batch_size = 5
-            offset = [0, 2, 5]
+            offset = [0, 5]
             count = [2, 3]
 
         Args:
