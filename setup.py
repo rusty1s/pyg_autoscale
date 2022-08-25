@@ -1,15 +1,19 @@
-import os
-import sys
 import glob
+import os
 import os.path as osp
-from setuptools import setup, find_packages
+import sys
 
 import torch
+from setuptools import find_packages, setup
 from torch.__config__ import parallel_info
-from torch.utils.cpp_extension import BuildExtension
-from torch.utils.cpp_extension import CppExtension, CUDAExtension, CUDA_HOME
+from torch.utils.cpp_extension import (CUDA_HOME, BuildExtension, CppExtension,
+                                       CUDAExtension)
 
 WITH_CUDA = torch.cuda.is_available() and CUDA_HOME is not None
+if os.getenv('FORCE_CUDA', '0') == '1':
+    WITH_CUDA = True
+if os.getenv('FORCE_ONLY_CPU', '0') == '1':
+    WITH_CUDA = False
 
 
 def get_extensions():
